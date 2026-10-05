@@ -1,0 +1,361 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================
+   PhotoMax — Design tokens & global styles
+   ================================ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Brand */
+  --pm-brand-50: 243 240 255;
+  --pm-brand-400: 145 102 254;
+  --pm-brand-500: 124 58 237;
+  --pm-brand-600: 109 40 217;
+
+  /* Surfaces */
+  --pm-radius-sm: 10px;
+  --pm-radius: 14px;
+  --pm-radius-lg: 20px;
+  --pm-radius-xl: 28px;
+
+  /* Borders (consistent 1px translucent) */
+  --pm-border: 220 220 230;
+  --pm-border-strong: 200 200 215;
+
+  /* Easings */
+  --pm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pm-ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Glow */
+  --pm-glow: 0 0 40px -10px rgba(124, 58, 237, 0.45);
+}
+
+.dark {
+  --pm-border: 50 50 75;
+  --pm-border-strong: 75 75 110;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Smooth out font weight changes between hover states */
+  font-synthesis-weight: none;
+}
+
+/* Make sure no element overflows the viewport horizontally */
+body {
+  overflow-x: hidden;
+}
+
+/* Better default focus ring */
+*:focus-visible {
+  outline: 2px solid rgb(var(--pm-brand-400));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Scrollbar styling — refined */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.25);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s var(--pm-ease);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.5);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Selection */
+::selection {
+  background: rgba(124, 58, 237, 0.25);
+  color: inherit;
+}
+
+/* ================================
+   Component primitives
+   ================================ */
+@layer components {
+  /* ── Card ────────────────────────────────────────────── */
+  .pm-card {
+    @apply relative rounded-2xl border bg-white/80 backdrop-blur-xl shadow-soft
+           border-ink-200/80 dark:bg-ink-900/60 dark:border-ink-800/80;
+  }
+  .pm-card-hover {
+    transition: transform 0.35s var(--pm-ease),
+      box-shadow 0.35s var(--pm-ease),
+      border-color 0.35s var(--pm-ease);
+  }
+  .pm-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -16px rgba(124, 58, 237, 0.45),
+      0 4px 12px -8px rgba(15, 23, 42, 0.15);
+    border-color: rgb(var(--pm-brand-400) / 0.5);
+  }
+
+  /* ── Button base ─────────────────────────────────────── */
+  .pm-btn {
+    @apply relative inline-flex select-none items-center justify-center gap-2
+           rounded-xl border px-4 py-2.5 text-sm font-semibold leading-none
+           transition-[transform,box-shadow,background-color,border-color,color] duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+           focus-visible:ring-brand-400 focus-visible:ring-offset-white
+           dark:focus-visible:ring-offset-ink-950;
+    will-change: transform;
+  }
+  /* Press: slight scale + remove glow */
+  .pm-btn:active:not(:disabled) {
+    transform: translateY(1px) scale(0.98);
+  }
+  .pm-btn:disabled,
+  .pm-btn[aria-disabled='true'] {
+    @apply pointer-events-none opacity-50;
+  }
+
+  /* ── Button variants — all with consistent border ──── */
+  .pm-btn-primary {
+    @apply pm-btn text-white shadow-glow;
+    background-image: linear-gradient(135deg,
+      rgb(124 58 237) 0%,
+      rgb(217 70 239) 50%,
+      rgb(244 63 94) 100%);
+    border-color: rgb(255 255 255 / 0.16);
+  }
+  .pm-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.4) 0%,
+      rgba(255,255,255,0) 50%);
+    opacity: 0.4;
+    pointer-events: none;
+    transition: opacity 0.2s var(--pm-ease);
+  }
+  .pm-btn-primary:hover {
+    box-shadow: 0 0 60px -10px rgba(124, 58, 237, 0.75),
+      0 6px 16px -8px rgba(244, 63, 94, 0.4);
+    transform: translateY(-1px);
+  }
+  .pm-btn-primary:hover::before {
+    opacity: 0.7;
+  }
+
+  .pm-btn-secondary {
+    @apply pm-btn border-ink-200 bg-white/85 text-ink-700 backdrop-blur
+           dark:border-ink-700 dark:bg-ink-900/60 dark:text-ink-100;
+    box-shadow: 0 1px 0 rgba(15,23,42,0.04), 0 1px 2px rgba(15,23,42,0.04);
+  }
+  .pm-btn-secondary:hover {
+    @apply border-brand-300 text-brand-700 bg-white shadow-glow;
+    transform: translateY(-1px);
+  }
+  .dark .pm-btn-secondary:hover {
+    @apply bg-ink-900 text-brand-200;
+  }
+
+  .pm-btn-ghost {
+    @apply pm-btn border-transparent text-ink-600 bg-transparent
+           dark:text-ink-300;
+  }
+  .pm-btn-ghost:hover {
+    @apply bg-ink-100 text-ink-900 border-ink-200
+           dark:bg-ink-800/60 dark:text-ink-50 dark:border-ink-700/60;
+  }
+
+  .pm-btn-danger {
+    @apply pm-btn text-white;
+    background-image: linear-gradient(135deg,
+      rgb(244 63 94) 0%,
+      rgb(225 29 72) 100%);
+    border-color: rgb(255 255 255 / 0.18);
+    box-shadow: 0 0 32px -10px rgba(244, 63, 94, 0.5);
+  }
+  .pm-btn-danger:hover {
+    box-shadow: 0 0 48px -8px rgba(244, 63, 94, 0.7);
+    transform: translateY(-1px);
+  }
+
+  /* Icon-only button (square) */
+  .pm-btn-icon {
+    @apply pm-btn p-0 aspect-square;
+  }
+
+  /* ── Inputs ──────────────────────────────────────────── */
+  .pm-input {
+    @apply w-full rounded-xl border border-ink-200 bg-white/80 px-3.5 py-2.5 text-sm
+           text-ink-900 placeholder-ink-400 backdrop-blur
+           transition-[border-color,box-shadow,background-color] duration-200
+           focus:border-brand-400 focus:bg-white
+           focus:outline-none focus:ring-4 focus:ring-brand-300/30
+           dark:border-ink-700 dark:bg-ink-900/60 dark:text-ink-50
+           dark:placeholder-ink-500 dark:focus:bg-ink-900
+           dark:focus:border-brand-400 dark:focus:ring-brand-400/20;
+  }
+  .pm-input:hover:not(:focus) {
+    @apply border-ink-300 dark:border-ink-600;
+  }
+  .pm-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider
+           text-ink-500 dark:text-ink-400;
+  }
+  .pm-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+    border-color: rgb(var(--pm-border) / 0.6);
+  }
+  .pm-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-ink-200 to-transparent
+           dark:via-ink-800;
+  }
+  .pm-glass {
+    @apply bg-white/60 backdrop-blur-2xl border border-white/40
+           dark:bg-ink-900/50 dark:border-ink-800/60;
+  }
+  .pm-grad-text {
+    @apply bg-gradient-to-br from-brand-500 via-fuchsia-500 to-accent-500
+           bg-clip-text text-transparent;
+  }
+}
+
+/* ================================
+   Background ambience
+   ================================ */
+.pm-ambience {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 12% 0%, rgba(124, 58, 237, 0.18) 0%, transparent 70%),
+    radial-gradient(50% 35% at 90% 10%, rgba(244, 63, 94, 0.12) 0%, transparent 70%),
+    radial-gradient(40% 30% at 80% 100%, rgba(56, 189, 248, 0.10) 0%, transparent 70%);
+}
+.dark .pm-ambience {
+  background:
+    radial-gradient(60% 40% at 12% 0%, rgba(124, 58, 237, 0.30) 0%, transparent 70%),
+    radial-gradient(50% 35% at 90% 10%, rgba(244, 63, 94, 0.20) 0%, transparent 70%),
+    radial-gradient(40% 30% at 80% 100%, rgba(56, 189, 248, 0.16) 0%, transparent 70%);
+}
+
+/* ================================
+   Drag & drop
+   ================================ */
+.pm-drag-over {
+  outline: 2px dashed rgba(124, 58, 237, 0.5);
+  outline-offset: -4px;
+  background-color: rgba(124, 58, 237, 0.05);
+}
+.pm-dragging {
+  cursor: grabbing !important;
+  z-index: 50;
+}
+
+/* ================================
+   Skeleton
+   ================================ */
+.pm-skeleton {
+  background: linear-gradient(90deg,
+    rgba(148, 163, 184, 0.12) 0%,
+    rgba(148, 163, 184, 0.28) 50%,
+    rgba(148, 163, 184, 0.12) 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* ================================
+   Entrance animations
+   ================================ */
+@keyframes pm-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pm-fade-up {
+  animation: pm-fade-up 0.45s var(--pm-ease) both;
+}
+
+@keyframes pm-pop {
+  0%   { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.pm-pop {
+  animation: pm-pop 0.3s var(--pm-ease-snap) both;
+}
+
+/* ================================
+   Stagger helper
+   ================================ */
+.pm-stagger > * {
+  animation: pm-fade-up 0.45s var(--pm-ease) both;
+}
+.pm-stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.pm-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.pm-stagger > *:nth-child(3) { animation-delay: 0.10s; }
+.pm-stagger > *:nth-child(4) { animation-delay: 0.14s; }
+.pm-stagger > *:nth-child(5) { animation-delay: 0.18s; }
+.pm-stagger > *:nth-child(6) { animation-delay: 0.22s; }
+.pm-stagger > *:nth-child(7) { animation-delay: 0.26s; }
+.pm-stagger > *:nth-child(8) { animation-delay: 0.30s; }
+.pm-stagger > *:nth-child(9) { animation-delay: 0.34s; }
+.pm-stagger > *:nth-child(n+10) { animation-delay: 0.38s; }
+
+/* ================================
+   Touch targets — accessibility
+   ================================ */
+@media (pointer: coarse) {
+  .pm-btn,
+  button,
+  [role='button'] {
+    min-height: 44px;
+  }
+  input.pm-btn,
+  select.pm-btn {
+    min-height: 44px;
+  }
+}
+
+/* ================================
+   Print
+   ================================ */
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* ================================
+   Reduced motion
+   ================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

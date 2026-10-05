@@ -1,0 +1,29 @@
+# dependencies / build artifacts
+node_modules
+dist
+dist-ssr
+*.local
+.vite
+
+# system / editor noise
+.DS_Store
+*.log
+.eslintcache
+.vscode
+.idea
+
+# env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# tool caches
+.npm
+coverage
+
+# leftover / debug placeholders from earlier dev iterations
+*.bak
+*.bak.disabled
+_archive-debug.mjs*
+debug-regex.mjs*
+debug-regex.js*
