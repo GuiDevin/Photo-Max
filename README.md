@@ -3,7 +3,7 @@
 > **Plataforma completa de gestão para fotógrafos.**
 > Contratos, finanças, tarefas e CRM — tudo num só lugar, com visual sofisticado e operação offline-first.
 
-🌐 **Demo online:** [https://guidevin.github.io/PhotoMax/](https://guidevin.github.io/PhotoMax/)
+🌐 **Demo online:** [https://guidevin.github.io/Photo-Max/](https://guidevin.github.io/Photo-Max/)
 
 ![PhotoMax](./public/favicon.svg)
 
@@ -44,7 +44,7 @@ npm run test:security  # bateria de testes de segurança
 ### Build para GitHub Pages (já configurado)
 
 ```bash
-npm run build        # usa base /PhotoMax/ por padrão
+npm run build        # usa base /Photo-Max/ por padrão
 # saída em dist/, pronta pra deploy
 ```
 
@@ -58,20 +58,21 @@ VITE_BASE=/ npm run build
 
 Este projeto já vem com:
 
-- `base: '/PhotoMax/'` configurado no `vite.config.ts`
+- `base: '/Photo-Max/'` configurado no `vite.config.ts` (automático em produção)
 - `public/404.html` com fallback SPA (deep links funcionam)
 - `public/.nojekyll` (desabilita Jekyll do GH Pages)
+- `.github/workflows/deploy.yml` (build + deploy a cada push em `main`)
 
 ### Setup inicial (uma vez só)
 
 1. Crie o repositório no GitHub: <https://github.com/new>
-   - Nome: `PhotoMax`
+   - Nome: `Photo-Max`
    - Visibilidade: Public
    - **Não** marque "Initialize with README" (você já tem um)
 2. Adicione o remote:
 
    ```bash
-   git remote add origin https://github.com/GuiDevin/PhotoMax.git
+   git remote add origin https://github.com/GuiDevin/Photo-Max.git
    ```
 
 3. Faça push da branch `main`:
@@ -81,25 +82,22 @@ Este projeto já vem com:
    ```
 
 4. Nas configurações do repo no GitHub: **Settings → Pages**
-   - Source: **Deploy from a branch**
-   - Branch: **gh-pages** / **root**
-5. Para publicar o conteúdo do `dist/` a cada release, basta rodar:
+   - Source: **GitHub Actions** (não "Deploy from a branch")
+5. Pronto — a cada push em `main` o site é buildado e publicado em
+   <https://guidevin.github.io/Photo-Max/>
 
-   ```bash
-   npm run build
-   git add dist -f
-   git commit -m "deploy: build artifacts"
-   git subtree push --prefix dist origin gh-pages
-   ```
+### Outros hosts (Vercel, Netlify, domínio próprio)
 
-   Ou use uma Action automática (veja `.github/workflows/deploy.yml` abaixo).
+Se você for hospedar em outro lugar que não seja `guidevin.github.io/Photo-Max/`,
+use a variável `VITE_BASE` com a base correta:
 
-### Workflow de deploy automático
+```bash
+# Domínio próprio (https://photomax.com.br)
+VITE_BASE=/ npm run build
 
-Já incluímos um workflow GitHub Actions em `.github/workflows/deploy.yml`. Cada push em `main` faz build e publica em `gh-pages` automaticamente. Basta:
-
-1. Habilitar GitHub Pages no repo (Settings → Pages → Source: GitHub Actions)
-2. Pronto — push em `main` = deploy
+# Subcaminho (https://exemplo.com/app/)
+VITE_BASE=/app/ npm run build
+```
 
 ## 🛡️ Segurança implementada
 

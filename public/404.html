@@ -6,12 +6,12 @@
     <title>PhotoMax — Redirecionando…</title>
     <!--
       SPA fallback for GitHub Pages.
-      When a user hits a deep URL like /PhotoMax/tarefas, GitHub Pages serves this
+      When a user hits a deep URL like /Photo-Max/tarefas, GitHub Pages serves this
       404.html. We capture the path, persist it in sessionStorage, and redirect to
       index.html. index.html's bootstrap script then restores the route via
       history.replaceState so React Router picks it up.
     -->
-    <link rel="icon" type="image/svg+xml" href="/PhotoMax/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/Photo-Max/favicon.svg" />
     <style>
       html, body { height: 100%; margin: 0; }
       body {
@@ -38,13 +38,13 @@
         try {
           var path = window.location.pathname || '/';
           // Strip the repo prefix to recover the in-app route
-          var prefix = '/PhotoMax';
+          var prefix = '/Photo-Max';
           if (path.indexOf(prefix) === 0) {
             var inner = path.slice(prefix.length) || '/';
             sessionStorage.setItem('pm:redirect', inner + window.location.search + window.location.hash);
           }
         } catch (e) { /* sessionStorage may be disabled */ }
-        window.location.replace('/PhotoMax/');
+        window.location.replace('/Photo-Max/');
       })();
     </script>
   </head>

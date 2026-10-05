@@ -12,7 +12,7 @@ Abra este link e preencha exatamente:
 | Campo          | Valor       |
 |----------------|-------------|
 | Owner          | `GuiDevin`  |
-| Repository name| `PhotoMax`  |
+| Repository name| `Photo-Max`  |
 | Description    | `PhotoMax — plataforma completa de gestão para fotógrafos` |
 | Visibilidade   | ✅ Public  (obrigatório pra GitHub Pages gratuito)
 | Initialize     | ❌ **NÃO** marcar nada (README, .gitignore, license) — já temos tudo |
@@ -34,7 +34,7 @@ git push -u origin main
 
 Depois do push:
 
-1. Vá em **https://github.com/GuiDevin/PhotoMax/settings/pages**
+1. Vá em **https://github.com/GuiDevin/Photo-Max/settings/pages**
 2. Em **Build and deployment → Source** escolha **GitHub Actions**
 3. Salve (não precisa selecionar branch, é Actions)
 
@@ -42,15 +42,15 @@ Pronto! O workflow que está em `.github/workflows/deploy.yml` vai:
 - Detectar o push em `main`
 - Rodar `npm ci && npm run build`
 - Publicar o conteúdo de `dist/` na branch `gh-pages`
-- Servir em **https://guidevin.github.io/PhotoMax/**
+- Servir em **https://guidevin.github.io/Photo-Max/**
 
 ## Verificação
 
 Acompanhe o status do deploy em:
-👉 **https://github.com/GuiDevin/PhotoMax/actions**
+👉 **https://github.com/GuiDevin/Photo-Max/actions**
 
 Quando o ✅ aparecer, abre:
-👉 **https://guidevin.github.io/PhotoMax/**
+👉 **https://guidevin.github.io/Photo-Max/**
 
 (Em geral leva 1-2 minutos pra propagar.)
 

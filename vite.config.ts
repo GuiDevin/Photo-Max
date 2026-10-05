@@ -2,11 +2,17 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
-// PhotoMax Vite configuration with strict security headers
-// Default base is `/` for normal hosting (Vercel, Netlify, Cloudflare Pages,
-// self-host). For GitHub Pages project hosting, set VITE_BASE=/PhotoMax/
-// (or whatever your repo is named) so assets resolve correctly.
-const base = process.env.VITE_BASE || '/';
+// PhotoMax Vite configuration with strict security headers.
+//
+// Base path strategy:
+//   - Dev server  (`vite`)             → `/`           — works at http://localhost:5173/
+//   - Production  (`vite build`)      → `/Photo-Max/` — matches GitHub Pages project URL
+//                                         (https://guidevin.github.io/Photo-Max/)
+//   - Other hosts (Vercel, Netlify…)  → override with VITE_BASE=/ npm run build
+const REPO_NAME = 'Photo-Max';
+const base =
+  process.env.VITE_BASE ||
+  (process.env.NODE_ENV === 'production' ? `/${REPO_NAME}/` : '/');
 
 export default defineConfig({
   base,
